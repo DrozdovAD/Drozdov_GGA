@@ -196,7 +196,7 @@ public class MailTransferAgent {
 			
 			mailBoxMapper mapper=session.getMapper(mailBoxMapper.class);
 			
-			list=mapper.loadMailBoxes();
+			list=mapper.selectAllBoxes();
 			for(MailBox mb:list){
 				SqlSession session1 =factory.openSession();
 				LetterMapper mapper1=session1.getMapper(LetterMapper.class);
