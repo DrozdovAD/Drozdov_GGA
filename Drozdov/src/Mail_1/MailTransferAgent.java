@@ -54,7 +54,6 @@ public class MailTransferAgent {
 					connection.close();
 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				System.out.println("Sending " + "from " + from + " to " + to
@@ -144,7 +143,6 @@ public class MailTransferAgent {
 
 			Thread.currentThread().sleep(randomTime.nextInt(5000 + 1));
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
