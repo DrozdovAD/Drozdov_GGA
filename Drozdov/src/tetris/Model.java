@@ -10,6 +10,7 @@ public class Model implements EventProcessor {
 	Logic logic;
 	State state;
 	private List<ModelListener> _listeners;
+	long score;
 	
 	public Model() {
 		_listeners = new LinkedList<>();
@@ -75,6 +76,10 @@ public class Model implements EventProcessor {
 	@Override
 	public boolean gameOver() {
 		return logic.gameOver();
+	}
+
+	public long getScore() {
+		return state.score;
 	}
 
 	

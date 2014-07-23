@@ -17,10 +17,16 @@ public interface mailBoxMapper {
 	@Insert(" insert into Letters (fromid, text,toid) values (#{from} ,#{text}, #{to})")
 	void InsertIntoLetters(@Param("from") int fromid,@Param("text") String text,@Param("to") int toid);
 
-	@Select("select max(id) from MailBox")
-	int selectMaxBoxes();
+	@Select("select count(id) from MailBox")
+	int selectCountBoxes();
 
-	@Delete("delete from MailBox"+"delete from Letters")
-	void deleteAll();
+	@Delete("delete from #{table}")
+	void deleteAll(String table);
+
+	@Delete("delete from MailBox")
+	void deleteFromMailBox();
+	
+	@Delete("delete from Letters")
+	void deleteFromLetters();
 
 }

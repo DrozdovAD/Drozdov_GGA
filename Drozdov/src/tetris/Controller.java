@@ -13,6 +13,8 @@ public class Controller implements ModelListener, EventProcessor {
 	@Override
 	public void updateState(State state) {
 		_view.updateState(state);
+		_view.score=_model.getScore();
+		 
 		if (_model.gameOver()) {
 			_view.gameOver();
 		}

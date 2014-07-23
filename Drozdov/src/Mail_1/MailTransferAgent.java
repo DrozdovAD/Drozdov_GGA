@@ -20,6 +20,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class MailTransferAgent {
 	private Object mutex = new Object();
 	private static List<MailBox> list = new ArrayList<>();
+	
+	
 
 	{
 		initMailBoxes();
@@ -33,27 +35,33 @@ public class MailTransferAgent {
 			public void run() {
 
 				pause();
+				InputStream resourseAsStream;
 				try {
+					resourseAsStream = Resources.getResourceAsStream("Mail_1/config.xml");
+					SqlSessionFactory factory= new SqlSessionFactoryBuilder().build(resourseAsStream);
+					factory.getConfiguration().addMapper(mailBoxMapper.class);
+					factory.getConfiguration().addMapper(LetterMapper.class);
+					
+					SqlSession session =factory.openSession();
+					
+					
+					mailBoxMapper mapper=session.getMapper(mailBoxMapper.class);
 
-					Connection connection = DriverManager
-							.getConnection("jdbc:mysql://localhost/Mail?user=root");
-
-					Letter letter = fillLetter(text, to, from, connection);
+					Letter letter = fillLetter(text, to, from, mapper);
 
 					synchronized (mutex) {
+						addLetter(letter,mapper);
 						for (MailBox box : list) {
 						if(box.id==letter.to) {
 							box.letters.add(letter);
 						}
-						addLetter(letter, connection);
 						if(box.id==letter.from) {
 							box.letters.add(letter);
 						}
 						}
 					}
-					connection.close();
 
-				} catch (SQLException e) {
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -63,37 +71,31 @@ public class MailTransferAgent {
 		}).start();
 	}
 			private Letter fillLetter(final String text, String to,
-					String from, Connection connection) throws SQLException {
-				Statement st = connection.createStatement();
+					String from, mailBoxMapper mapper)  {
 				int toid = -1, fromid = -1;
-				ResultSet resultSet = st.executeQuery("select * from MailBox");
-				while (resultSet.next()) {
-
-					if ((resultSet.getString("adress").equals(from))) {
-						fromid = Integer.parseInt(resultSet.getString("id"));
+				List<MailBox> listmb=mapper.selectAllBoxes();
+				for (MailBox mailBox : listmb) {
+					if ((mailBox.adress.equals(from))) {
+						fromid = mailBox.id;
 					}
 
-					if ((resultSet.getString("adress").equals(to))) {
-						toid = Integer.parseInt(resultSet.getString("id"));
+					if ((mailBox.adress.equals(to))) {
+						toid = mailBox.id;
 					}
 
 				}
 
-				resultSet.close();
 
 				// если не нашлось такого адрееса, то добавим его
 				if (fromid == -1) {
-					fromid = addUser(from, connection);
+					fromid = addUser(from, mapper);
 					addMailBox(fromid,from);
 
 				}
 				if (toid == -1) {
-					toid = addUser(to, connection);
+					toid = addUser(to, mapper);
 					addMailBox(toid,to);
 				}
-
-				resultSet.close();
-				st.close();
 
 				return new Letter(fromid, text, toid);
 			}
@@ -102,39 +104,18 @@ public class MailTransferAgent {
 
 	
 
-	private int addUser(final String adress, Connection connection)
-			throws SQLException {
-		String query = " insert into MailBox (id, adress)" + " values (?, ?)";
-		PreparedStatement preparedStmt = connection.prepareStatement(query);
-		Statement st = connection.createStatement();
-		ResultSet resultSet = st.executeQuery("select * from MailBox");
-		int id = 0;
-
-		if (resultSet.isBeforeFirst()) {
-			resultSet = st.executeQuery("select max(id) from MailBox");
-			while (resultSet.next()) {
-				id = resultSet.getInt("max(id)");
-				id++;
-			}
-		}
-
-		preparedStmt.setInt(1, id);
-		preparedStmt.setString(2, adress);
-		preparedStmt.execute();
-		return id;
+	private int addUser(final String adress, mailBoxMapper mapper)
+			{
+		
+		int count=mapper.selectCountBoxes();
+		mapper.InsertIntoMailBox(count, adress);
+		
+		return count;
 	}
 
-	private void addLetter(Letter letter, Connection connection)
-			throws SQLException {
-		Statement st = connection.createStatement();
-		String query = " insert into Letters (fromid, text,toid)"
-				+ " values (? ,?, ?)";
-		PreparedStatement preparedStmt = connection.prepareStatement(query);
-
-		preparedStmt.setInt(1, letter.from);
-		preparedStmt.setString(2, letter.text);
-		preparedStmt.setInt(3, letter.to);
-		preparedStmt.execute();
+	private void addLetter(Letter letter, mailBoxMapper mapper)
+			 {
+	mapper.InsertIntoLetters(letter.from, letter.text, letter.to);
 
 	}
 
@@ -184,7 +165,7 @@ public class MailTransferAgent {
 	}
 
 	private void initMailBoxes() {
-		InputStream resourseAsStream;
+		 InputStream resourseAsStream;
 		try {
 			resourseAsStream = Resources.getResourceAsStream("Mail_1/config.xml");
 			SqlSessionFactory factory= new SqlSessionFactoryBuilder().build(resourseAsStream);
@@ -212,18 +193,25 @@ public class MailTransferAgent {
 	
 	
 	public void deleteAll() {
+		InputStream resourseAsStream;
 		try {
-		Connection connection = DriverManager
-				.getConnection("jdbc:mysql://localhost/Mail?user=root");
-		Statement st = connection.createStatement();
-		String query = "delete from MailBox";	
-		PreparedStatement preparedStmt = connection.prepareStatement(query);
-		preparedStmt.execute();
-		query = "delete from Letters";	
-		preparedStmt = connection.prepareStatement(query);
-		preparedStmt.execute();
+			resourseAsStream = Resources.getResourceAsStream("Mail_1/config.xml");
+			SqlSessionFactory factory= new SqlSessionFactoryBuilder().build(resourseAsStream);
+			factory.getConfiguration().addMapper(mailBoxMapper.class);
+			factory.getConfiguration().addMapper(LetterMapper.class);
+			
+			SqlSession session =factory.openSession();
+			
+			
+			mailBoxMapper mapper=session.getMapper(mailBoxMapper.class);
+			
+		//	mapper.deleteAll("MailBox");
+			mapper.deleteFromLetters();
+			mapper.deleteFromMailBox();
+			
 		System.out.println("deleted");
-		} catch (SQLException e) {
+		} catch (
+				IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

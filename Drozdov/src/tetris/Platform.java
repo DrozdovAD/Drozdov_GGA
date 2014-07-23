@@ -17,4 +17,6 @@ public interface Platform {
 
 	void gameOver();
 
+	void drawScore(long score);
+
 }

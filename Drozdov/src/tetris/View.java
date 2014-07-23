@@ -8,7 +8,7 @@ public class View implements PlatformKeyListener {
 	private int _fieldWidth;
 	private int _fieldOffsetX;
 	private int _fieldOffsetY;
-
+    public long score;
 	private Platform _platform;
 
 	private EventProcessor _processor;
@@ -24,7 +24,7 @@ public class View implements PlatformKeyListener {
 		}
 
 		_platform.clearArea();
-		drawField(state.getField());
+		drawField(state);
 		drawFigure(state);
 	}
 
@@ -34,26 +34,30 @@ public class View implements PlatformKeyListener {
 		int rowShift = state.figureRow;
 		int columnShift = state.figureColumn;
 
-		drawMatrix(matrix, rowShift, columnShift);
-
+		drawMatrix(matrix, rowShift-4, columnShift,1);
+		_platform.drawScore(score);
 	}
 
-	private void drawField(Field field) {
+	private void drawField(State state) {
 
 		_platform.fillRect(_platform.backgroundColorIndex(), _fieldOffsetX,_fieldOffsetY, _fieldWidth, _fieldHeight);
+		drawMatrix(state.getField().box, -4, 0,0);
 
-		int[][] matrix = field.box;
-
-		drawMatrix(matrix, 0, 0);
+		
+		_platform.fillRect(_platform.backgroundColorIndex(), _fieldOffsetX+_fieldWidth+CELL_SIZE,_fieldOffsetY, 4*CELL_SIZE, 4*CELL_SIZE);
+		int[][] matrix = state.futurefigure.getData();
+		drawMatrix(matrix, 0,  11,0);
 	}
 
-	private void drawMatrix(int[][] matrix, int rowShift, int columnShift) {
+	private void drawMatrix(int[][] matrix, int rowShift, int columnShift, int drawFigure) {
 		for (int r = 0; r < matrix.length; r++) {
 			for (int c = 0; c < matrix[r].length; c++) {
 				if (matrix[r][c] == 0) {
 					continue;
 				}
-				drawCell(matrix[r][c], rowShift + r, columnShift + c);
+				if((rowShift + r>=0)||(drawFigure==0)) {
+					drawCell(matrix[r][c], rowShift + r, columnShift + c);
+				}
 			}
 		}
 	}
@@ -64,9 +68,9 @@ public class View implements PlatformKeyListener {
 	}
 
 	private void calculateFieldDimensions(Field field) {
-		_fieldHeight = field.getRows() * CELL_SIZE;
+		_fieldHeight = (field.getRows()-4) * CELL_SIZE;
 		_fieldWidth = field.getColumns() * CELL_SIZE;
-		_fieldOffsetX = (_platform.getWidth() - _fieldWidth) / 2;
+		_fieldOffsetX = (_platform.getWidth() - _fieldWidth) / 10;
 		_fieldOffsetY = (_platform.getHeight() - _fieldHeight) / 2;
 	}
 

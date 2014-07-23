@@ -26,7 +26,7 @@ public class JavaPlatform  implements Platform {
 		_keyListener = keyListener;
 
 		_panel = new JPanel();
-		_panel.setPreferredSize(new Dimension(400, 700));
+		_panel.setPreferredSize(new Dimension(500, 700));
 		f = new Font(
                 "Monospaced", Font.ITALIC, 30);
      _panel.setFont(f);
@@ -115,6 +115,21 @@ public class JavaPlatform  implements Platform {
 		textWidth  = (int)(rect.getWidth());
 
 		g.drawString(s, (_frame.getWidth()-textWidth)/2, (_frame.getHeight()-textHeight+_panel.getHeight())/2);
+	}
+
+	@Override
+	public void drawScore(long score) {
+		Graphics2D g = (Graphics2D) _panel.getGraphics();
+		g.setColor(Color.black);
+		
+		FontMetrics fm   = g.getFontMetrics(f);
+		String s=Long.toString(score);
+		java.awt.geom.Rectangle2D rect = fm.getStringBounds(s, g);
+
+		int textHeight = (int)(rect.getHeight()); 
+		int textWidth  = (int)(rect.getWidth());
+
+		g.drawString(s, (_frame.getWidth()-textWidth)/2, (_frame.getHeight()+textHeight-_panel.getHeight())/2);		
 	}
 	
 }

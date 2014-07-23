@@ -24,7 +24,7 @@ public class Tetris {
 		frame.pack();
 		frame.setVisible(true);
 		
-		Model model = new Model();
+		final Model model = new Model();
 		
 		final Controller controller = new Controller(model, view);
 		
@@ -39,9 +39,15 @@ public class Tetris {
 			
 			@Override
 			public void run() {
+				try {
+					Thread.sleep(model.state.speed);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				controller.moveDown();
 			}
-		}, 1, 1, TimeUnit.SECONDS);
+		}, 1, 1, TimeUnit.MILLISECONDS);
 	}
 	
 }
