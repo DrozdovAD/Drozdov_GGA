@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Model implements EventProcessor {
 
-	private static final int WIDTH = 10;
-	private static final int HEIGHT = 20;
+	private static final int WIDTH = 20;
+	private static final int HEIGHT = 40;
 	Logic logic;
 	State state;
 	private List<ModelListener> _listeners;

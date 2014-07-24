@@ -7,57 +7,124 @@ import java.util.Random;
 public class Figure {
 
 	static int[][] figureI = {
-			{0,1,0,0},
-			{0,1,0,0},
-			{0,1,0,0},
-			{0,1,0,0},
+			{0,0,1,0,0},
+			{0,0,1,0,0},
+			{0,0,1,0,0},
+			{0,0,1,0,0},
+			{0,0,1,0,0},
 		};
-	static int[][] figureS = {
-			{0,2,0,0},
-			{0,2,2,0},
-			{0,0,2,0},
-			{0,0,0,0},
+	static int[][] figureF = {
+		{0,0,0,0,0},
+		{0,0,1,1,0},
+		{0,1,1,0,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
 		};
 	static int[][] figureL = {
-			{0,3,3,0},
-			{0,3,0,0},
-			{0,3,0,0},
-			{0,0,0,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,1,0},
+		{0,0,0,0,0},
 		};
 	static int[][] figureT = {
-			{0,4,0,0},
-			{0,4,4,0},
-			{0,4,0,0},
-			{0,0,0,0},
+		{0,0,0,0,0},
+		{0,1,1,1,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
 		};
-	static int[][] figureQ = {
-			{0,0,0,0},
-			{0,5,5,0},
-			{0,5,5,0},
-			{0,0,0,0},
+	static int[][] figureN = {
+		{0,1,0,0,0},
+		{0,1,0,0,0},
+		{0,1,1,0,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
 		};
+	static int[][] figureP = {
+		{0,1,1,0,0},
+		{0,1,1,0,0},
+		{0,1,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+	};
+	static int[][] figureU = {
+		{0,0,0,0,0},
+		{0,1,0,1,0},
+		{0,1,1,1,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+	};
+	static int[][] figureV = {
+		{0,0,0,0,0},
+		{0,1,0,0,0},
+		{0,1,0,0,0},
+		{0,1,1,1,0},
+		{0,0,0,0,0},
+	};
+	static int[][] figureW = {
+		{0,0,0,0,0},
+		{0,1,0,0,0},
+		{0,1,1,0,0},
+		{0,0,1,1,0},
+		{0,0,0,0,0},
+	};
+	static int[][] figureX = {
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,1,1,1,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
+	};
+	static int[][] figureY = {
+		{0,0,1,0,0},
+		{0,1,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,0,0},
+		{0,0,0,0,0},
+	};
+	static int[][] figureZ = {
+		{0,0,0,0,0},
+		{0,1,1,0,0},
+		{0,0,1,0,0},
+		{0,0,1,1,0},
+		{0,0,0,0,0},
+	};
 
 	static List<int[][]> allFigures;
 	
 	static {
 		allFigures = new ArrayList<int[][]>();
-		allFigures.add(figureI);
-		allFigures.add(rotateLeft(figureI));
 		
-		allFigures.add(figureS);
-		int[][] flippedS = flip(figureS);
-		allFigures.add(flippedS);
-		allFigures.add(rotateLeft(figureS));
-		allFigures.add(rotateLeft(flippedS));
-		
-		allFigures.add(figureL);
 
-		allFigures.add(figureT);
+		add(figureI);
+		add(figureX);
+		add(figureL);
+		add(figureT);
+		add(figureN);
+		add(figureU);
+		add(figureV);
+		add(figureW);
+		add(figureY);
+		add(figureZ);
 		
-		allFigures.add(figureQ);
+		
+	}
+
+	private static void add(int[][] figure) {
+		int[][] flip;
+		allFigures.add(figure);
+		flip = flip(figure);
+		allFigures.add(flip);
+		allFigures.add(rotateLeft(figure));
+		allFigures.add(rotateLeft(flip));
+		allFigures.add(rotateRight(figure));
+		allFigures.add(rotateRight(flip));
+		allFigures.add(rotateRight(rotateRight(figure)));
+		allFigures.add(rotateRight(rotateRight(flip)));
 	}
 	
-	int[][] data = new int[4][4];
+	int[][] data = new int[5][5];
 
 	private Figure() {
 	}
@@ -82,7 +149,7 @@ public class Figure {
 	}
 	
 	static int[][] flip(int[][] data){
-		int[][] result = {{0, 0, 0, 0},{0, 0, 0, 0},{0, 0, 0, 0},{0, 0, 0, 0}};
+		int[][] result = {{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0}};
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[0].length; j++) {
 				
@@ -93,7 +160,7 @@ public class Figure {
 		return result;
 	}
 	static int[][] rotateLeft(int[][] data){
-		int[][] result = {{0, 0, 0, 0},{0, 0, 0, 0},{0, 0, 0, 0},{0, 0, 0, 0}};
+		int[][] result = {{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0}};
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[0].length; j++) {
 				result[i][j]=data[j][data[0].length-1-i];
@@ -102,7 +169,7 @@ public class Figure {
 		return result;
 	}
 	static int[][] rotateRight(int[][] data){
-		int[][] result = {{0, 0, 0, 0},{0, 0, 0, 0},{0, 0, 0, 0},{0, 0, 0, 0}};
+		int[][] result = {{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0},{0, 0, 0, 0,0}};
 		for (int i = 0; i < data.length; i++) {
 			for (int j = 0; j < data[0].length; j++) {
 				result[i][j]=data[data[0].length-1-j][i];

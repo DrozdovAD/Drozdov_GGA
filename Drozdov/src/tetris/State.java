@@ -7,11 +7,11 @@ public class State {
 	public Figure futurefigure;
 	public int figureRow;
 	public int figureColumn;
-	public long speed=800;
+	public long speed=300;
 	int coltospeed=0;
 	public long score=0;
 	public State(int rows, int columns) {
-		field = new Field(rows+4, columns);
+		field = new Field(rows+5, columns);
 	}
 
 	public void init() {
@@ -91,7 +91,7 @@ public class State {
 		if(!canMoveDown()){
 			for (int r = 0; r < figure.data.length; r++) {
 				for (int c = 0; c < figure.data[r].length; c++) {
-					if ((figure.data[r][c] != 0)&&(r+figureRow<=3)) {
+					if ((figure.data[r][c] != 0)&&(r+figureRow<=4)) {
 								return true;
 					}
 				}

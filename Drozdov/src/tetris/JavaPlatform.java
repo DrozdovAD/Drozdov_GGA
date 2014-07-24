@@ -78,6 +78,19 @@ public class JavaPlatform  implements Platform {
 		Graphics2D g = (Graphics2D) _panel.getGraphics();
 		g.setColor(colors[colorIndex]);
 		g.fillRect(x, y, width, height);
+		int x1=x;
+		if(colorIndex==backgroundColorIndex()){
+			g.setColor(Color.GRAY);
+			
+			while(x<width){
+				x+=View.CELL_SIZE;
+			g.drawLine(x, y, x, y+height);
+			}
+			while(y<=height+View.CELL_SIZE){
+				y+=View.CELL_SIZE;
+				g.drawLine(x1, y, x1+width, y);
+			}
+		}
 	}
 
 	@Override

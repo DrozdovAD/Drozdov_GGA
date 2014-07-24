@@ -2,7 +2,8 @@ package tetris;
 
 public class View implements PlatformKeyListener {
 
-	private static int CELL_SIZE = 30;
+	public
+	static int CELL_SIZE = 15;
 
 	private int _fieldHeight;
 	private int _fieldWidth;
@@ -44,9 +45,9 @@ public class View implements PlatformKeyListener {
 		drawMatrix(state.getField().box, -4, 0,0);
 
 		
-		_platform.fillRect(_platform.backgroundColorIndex(), _fieldOffsetX+_fieldWidth+CELL_SIZE,_fieldOffsetY, 4*CELL_SIZE, 4*CELL_SIZE);
+		_platform.fillRect(_platform.backgroundColorIndex(), _fieldOffsetX+_fieldWidth+CELL_SIZE,_fieldOffsetY, 5*CELL_SIZE, 5*CELL_SIZE);
 		int[][] matrix = state.futurefigure.getData();
-		drawMatrix(matrix, 0,  11,0);
+		drawMatrix(matrix, 0,  21,0);
 	}
 
 	private void drawMatrix(int[][] matrix, int rowShift, int columnShift, int drawFigure) {
