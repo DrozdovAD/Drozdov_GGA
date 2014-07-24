@@ -101,7 +101,7 @@ public class JavaPlatform  implements Platform {
 		g.setColor(Color.black);
 		
 		FontMetrics fm   = g.getFontMetrics(f);
-		String s="Game Over";
+		String s="Game Over:";
 		java.awt.geom.Rectangle2D rect = fm.getStringBounds(s, g);
 
 		int textHeight = (int)(rect.getHeight()); 
@@ -129,7 +129,7 @@ public class JavaPlatform  implements Platform {
 		int textHeight = (int)(rect.getHeight()); 
 		int textWidth  = (int)(rect.getWidth());
 
-		g.drawString(s, (_frame.getWidth()-textWidth)/2, (_frame.getHeight()+textHeight-_panel.getHeight())/2);		
+		g.drawString(s, _frame.getWidth()*4/5-(textWidth)/2, (_frame.getHeight()+textHeight-_panel.getHeight())/2);		
 	}
 	
 }
