@@ -7,8 +7,7 @@ public class State {
 	public Figure futurefigure;
 	public int figureRow;
 	public int figureColumn;
-	public long speed=300;
-	int coltospeed=0;
+	public long speed=250;
 	public long score=0;
 	public State(int rows, int columns) {
 		field = new Field(rows+5, columns);
@@ -66,13 +65,8 @@ public class State {
 			}
 		}
 		
-			coltospeed++;
-		score+=(802-speed);
-		if(coltospeed==3){
-			coltospeed=0;
-			if(speed>200) {speed-=speed/10;}
-			else {speed-=speed/5;}
-		}
+		score+=3;
+			
 	}
 
 	public Field getField() {
@@ -84,7 +78,8 @@ public class State {
 	}
 
 	public void removeFullRows() {
-		field.removeFullRows();
+		score=field.removeFullRows(score,speed);
+		
 	}
 
 	public boolean gameOver() {

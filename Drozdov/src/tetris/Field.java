@@ -37,18 +37,23 @@ public class Field {
 		return box[0].length;
 	}
 
-	public void removeFullRows() {
+	public long removeFullRows(long score, long speed) {
 		int[][] b = new int[box.length][box[0].length];
-
+int flag=0;
 		int ptr = box.length - 1;
 		for (int row = box.length - 1; row >= 0; row--) {
 			if (isFull(box[row])) {
+				flag++;
 				continue;
 			}
 			b[ptr--] = box[row];
 		}
+		for(int i=1;i<=flag;i++){
+			speed-=speed/5;
+			score+=i*100;}
 		
 		box = b;
+		return score;
 
 	}
 
